@@ -1,0 +1,94 @@
+import java.util.Arrays;
+
+public class TextToWords {
+    public static void main (String[] args) {
+        
+        //Write the text you want to split into words and find out their frequency of occurrence in it.
+
+        String text = "teat? df] df] [   ] [ bd dhf, dsjf. ad< hi hi hi";
+        
+        //Remove from string text punctuation marks
+        //Удаляем из строки text знаки препинания
+
+        for (int j = 0; j < text.length(); j++) {
+
+            switch (text.charAt(j)) {
+                case '[' -> text = text.replace("[", "");
+                case ']' -> text = text.replace("]", "");
+                case '.' -> text = text.replace(".", "");
+                case ',' -> text = text.replace(",", "");
+                case '>' -> text = text.replace(">", "");
+                case '<' -> text = text.replace("<", "");
+                case '?' -> text = text.replace("?", "");
+                case '!' -> text = text.replace("!", "");
+                case ';' -> text = text.replace(";", "");
+                case ':' -> text = text.replace(":", "");
+                case '(' -> text = text.replace("(", "");
+                case ')' -> text = text.replace(")", "");
+                case '—' -> text = text.replace("—", "");
+                case '…' -> text = text.replace("…", "");
+                case '«' -> text = text.replace("«", "");
+                case '»' -> text = text.replace("»", "");
+                case '”' -> text = text.replace("”", "");
+                case '‟' -> text = text.replace("‟", "");
+                case '/' -> text = text.replace("/", "");
+                case '&' -> text = text.replace("&", "");
+            }
+        }
+
+        String pattern = "\\s+|,\\s*";
+
+        text = text.toLowerCase();
+
+        String[] allWordsFromText = text.split(pattern);
+
+        String[] noWordDuplicates = allWordsFromText.clone();
+
+        //Create Array with words and their frequency of occurrence in the text
+        //Создаем массив со словами и их частотностью в тексте
+
+        int count;
+
+        for (int i = 0, j; i < noWordDuplicates.length; i++) {
+            
+            count = 0;
+            j = 0;
+            while (j < allWordsFromText.length) {
+
+                if (allWordsFromText[j].equals(noWordDuplicates[i])) {
+                    
+                    count++;
+                }
+                j++;
+            }
+            noWordDuplicates[i] = noWordDuplicates[i] + " " + count;
+        }
+
+        // Replace duplicates to "" and count how many times it does
+        // Убираем повторяющиеся элементы, заменяя на пустую строку, и считаем сколько было замен
+
+        count = 0;
+
+        for (int i = 0; i < noWordDuplicates.length; i++) {
+
+            for (int j = i + 1; j < noWordDuplicates.length; j++) {
+
+                if (!noWordDuplicates[i].equals("") && noWordDuplicates[i].equals(noWordDuplicates[j])) {
+                    
+                    noWordDuplicates[i] = "";
+                    count++;
+                }
+            }
+        }
+
+        Arrays.sort(noWordDuplicates);
+
+        // Write out all except "" which amount equals number of duplicates in previous loop
+        // Выводим все, кроме пустых строк, количество которых равно количеству повторов в предыдущем цикле
+
+        for (int i = count; i < allWordsFromText.length; i++) {
+            
+            System.out.println(noWordDuplicates[i]);
+        }
+    }
+}
